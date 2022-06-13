@@ -6,7 +6,7 @@ const apiRoutes = require('./server/routes/api');
 
 app.use(cors());
 
-app.use(apiRoutes);
+app.use('/api', apiRoutes);
 
 app.listen(8080, () => {
   console.log("Server running on port 8080");
