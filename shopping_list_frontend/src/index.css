@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: 'Dosis', sans-serif;
+  font-family: 'Nunito', sans-serif;
+}
+
+.header {
+  color: white;
+  background-color: #4d81b7;
+  /*height: 40px;*/
+  padding: 10px;
+}
+
+.header h1 {
+  margin: 0;
+}
