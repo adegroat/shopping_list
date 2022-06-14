@@ -1,11 +1,13 @@
 import Header from './components/Header';
-import ShoppingList from './components/ShoppingList';
+import Main from './components/Main';
+
+import './index.css';
 
 function App() {
   return (
     <>
       <Header />
-      <ShoppingList />
+      <Main />
     </>
   );
 }

@@ -1,9 +1,17 @@
+import React from 'react';
 
-const ShoppingList = () => {
+const ShoppingList = ({items}) => {
+  const itemsJsx = items.map(item => {
+    return (
+      <div key={item.item_id} className="item">
+        <p>{item.name}</p>
+
+      </div>
+    )
+  });
+
   return(
-    <div >
-      <p>Your shopping list is currently empty :(</p>
-    </div>
+    <div>{itemsJsx}</div>
   )
 }
 
