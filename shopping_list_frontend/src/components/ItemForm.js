@@ -22,7 +22,8 @@ const ItemForm = ({
   nameProp = '', 
   descriptionProp = '', 
   quantityProp = 1, 
-  purchasedProp = false
+  purchasedProp = false,
+  item_id = 0
 }) => {
   const [name, setName] = useState(nameProp);
   const [description, setDescription] = useState(descriptionProp);
@@ -30,7 +31,7 @@ const ItemForm = ({
   const [purchased, setPurchased] = useState(purchasedProp);
   const [error, setError] = useState('');
 
-  const handleAddTask = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = {
@@ -40,9 +41,19 @@ const ItemForm = ({
       purchased
     };
 
+    const shouldPatch = isEditing && item_id !== 0;
+
+    let url = 'http://localhost:8080/api/list_items';
+
+    if(shouldPatch) {
+      url += '/' + item_id;
+    }
+
+    console.log(isEditing, item_id, shouldPatch);
+
     (async () => {
-      const rawRes = await fetch('http://localhost:8080/api/list_items', {
-        method: 'POST',
+      const rawRes = await fetch(url, {
+        method: shouldPatch ? 'PATCH' : 'POST',
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -51,7 +62,7 @@ const ItemForm = ({
       });
       const res = await rawRes.json();
 
-      if(res.status == 'success') {
+      if(res.status === 'success') {
         onClose();
       } else {
         setError(res.error);
@@ -80,7 +91,7 @@ const ItemForm = ({
           {isEditing ? 'Edit your item below' : 'Add your new item below'}
         </Typography>
 
-        <Box component="form" onSubmit={(e) => handleAddTask(e) }>
+        <Box component="form" onSubmit={(e) => handleSubmit(e) }>
           <TextField 
             margin="normal" 
             fullWidth 

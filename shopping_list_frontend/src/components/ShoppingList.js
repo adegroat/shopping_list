@@ -16,6 +16,7 @@ const ShoppingList = ({items}) => {
         description={item.description}
         quantity={item.quantity}
         purchased={item.purchased} 
+        itemId={item.item_id}
       />
     )
   });

@@ -11,12 +11,30 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
   
   const [purchasedChecked, setPurchasedChecked] = useState(purchased);  
   const [itemEdit, setItemEdit] = useState(0);
+  const [deleted, setDeleted] = useState(false);
+  const [error, setError] = useState('');
 
   const updatePurchased = (e) => {
     setPurchasedChecked(!purchasedChecked);
   }
 
+  const deleteItem = () => {
+    (async () => {
+      const rawRes = await fetch('http://localhost:8080/api/list_items/' + itemId, {
+        method: 'DELETE',
+      });
+      const res = await rawRes.json();
+
+      if(res.status === 'success') {
+        setDeleted(true);
+      } else {
+        setError(res.error);
+      }
+    })();
+  }
+
   return (
+    
     <>
       <Box sx={{
         display: 'flex', 
@@ -50,7 +68,7 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
 
         <Box>
           <EditOutlinedIcon onClick={() => setItemEdit(itemId)} />
-          <DeleteOutlinedIcon />
+          <DeleteOutlinedIcon onClick={() => deleteItem()} />
         </Box>
       </Box>
 
@@ -60,7 +78,8 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
           descriptionProp={description}
           purchasedProp={purchasedChecked}
           quantityProp={quantity}
-          isEditing={true} 
+          isEditing={true}
+          item_id={itemId} 
           onClose={() => setItemEdit(0)} />
       )}
     </>
