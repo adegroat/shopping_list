@@ -2,7 +2,7 @@
 const Header = () => {
   return(
     <div className="header">
-      <h1>Shopping List</h1>
+      <h3>SHOPPING LIST</h3>
     </div>
   )
 }
