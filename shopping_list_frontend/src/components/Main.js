@@ -6,6 +6,7 @@ import ItemForm from './ItemForm';
 
 const Main = () => {
   const [listItems, setListItems] = useState([]);
+  const [addItemVisible, setAddItemVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +27,13 @@ const Main = () => {
             <div>Your shopping list is currently empty :(</div>
             
             <div>
-              <Button variant="contained">Add Items</Button>
+              <Button onClick={() => setAddItemVisible(true)} variant="contained">Add Items</Button>
             </div>
           </div>
         )}
       </div>
+
+      {addItemVisible && <ItemForm onClose={() => setAddItemVisible(false)} />}
     </>
   )
 }
