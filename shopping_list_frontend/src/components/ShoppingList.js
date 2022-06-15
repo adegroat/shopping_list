@@ -1,17 +1,18 @@
 import React from 'react';
 
+import { Grid } from '@mui/material';
+
+import Item from './Item';
+
 const ShoppingList = ({items}) => {
   const itemsJsx = items.map(item => {
     return (
-      <div key={item.item_id} className="item">
-        <p>{item.name}</p>
-
-      </div>
+      <Item key={item.item_id} name={item.name} description={item.description} />
     )
   });
 
   return(
-    <div>{itemsJsx}</div>
+    <Grid>{itemsJsx}</Grid>
   )
 }
 
