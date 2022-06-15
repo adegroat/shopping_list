@@ -47,8 +47,6 @@ const ItemForm = ({
       url += '/' + item_id;
     }
 
-    console.log(isEditing, item_id, shouldPatch);
-
     (async () => {
       const rawRes = await fetch(url, {
         method: shouldPatch ? 'PATCH' : 'POST',
