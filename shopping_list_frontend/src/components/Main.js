@@ -8,19 +8,23 @@ const Main = () => {
   const [listItems, setListItems] = useState([]);
   const [addItemVisible, setAddItemVisible] = useState(false);
 
-  useEffect(() => {
+  const loadItemList = () => {
     const fetchData = async () => {
       const data = await fetch('http://localhost:8080/api/list_items');
       const jsonData = await data.json();
       setListItems(jsonData);
     }
     fetchData().catch(console.log);
+  }
+
+  useEffect(() => {
+    loadItemList();
   }, []);
 
   return(
     <>
       <div className="flex-col">
-        {listItems.length > 0 && <ShoppingList items={listItems} />}
+        {listItems.length > 0 && <ShoppingList loadItemList={loadItemList} items={listItems} />}
         
         {listItems.length <= 0 && (
           <div className="empty-list">
@@ -33,7 +37,12 @@ const Main = () => {
         )}
       </div>
 
-      {addItemVisible && <ItemForm onClose={() => setAddItemVisible(false)} />}
+      {addItemVisible && (
+        <ItemForm onClose={() => {
+          loadItemList();
+          setAddItemVisible(false)
+        }} />
+      )}
     </>
   )
 }

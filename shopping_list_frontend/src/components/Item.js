@@ -7,11 +7,10 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 import ItemForm from './ItemForm';
 
-const Item = ({itemId, name, description, quantity, purchased}) => {
-  
+const Item = ({data, loadItemList}) => {
+  const { name, description, quantity, purchased, item_id } = data
   const [purchasedChecked, setPurchasedChecked] = useState(purchased);  
   const [itemEdit, setItemEdit] = useState(0);
-  const [deleted, setDeleted] = useState(false);
   const [error, setError] = useState('');
 
   const updatePurchased = (e) => {
@@ -20,13 +19,13 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
 
   const deleteItem = () => {
     (async () => {
-      const rawRes = await fetch('http://localhost:8080/api/list_items/' + itemId, {
+      const rawRes = await fetch('http://localhost:8080/api/list_items/' + item_id, {
         method: 'DELETE',
       });
       const res = await rawRes.json();
 
       if(res.status === 'success') {
-        setDeleted(true);
+        loadItemList();
       } else {
         setError(res.error);
       }
@@ -34,7 +33,7 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
   }
 
   return (
-    
+
     <>
       <Box sx={{
         display: 'flex', 
@@ -67,20 +66,20 @@ const Item = ({itemId, name, description, quantity, purchased}) => {
         </Box>
 
         <Box>
-          <EditOutlinedIcon onClick={() => setItemEdit(itemId)} />
+          <EditOutlinedIcon onClick={() => setItemEdit(item_id)} />
           <DeleteOutlinedIcon onClick={() => deleteItem()} />
         </Box>
       </Box>
 
       {itemEdit !== 0 && (
         <ItemForm 
-          nameProp={name} 
-          descriptionProp={description}
-          purchasedProp={purchasedChecked}
-          quantityProp={quantity}
+          data={data} 
           isEditing={true}
-          item_id={itemId} 
-          onClose={() => setItemEdit(0)} />
+          onClose={() => {
+            loadItemList();
+            setItemEdit(0)
+          }
+        } />
       )}
     </>
   )

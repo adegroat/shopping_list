@@ -5,18 +5,15 @@ import { Container, Typography, Box, Button } from '@mui/material';
 import Item from './Item';
 import ItemForm from './ItemForm';
 
-const ShoppingList = ({items}) => {
+const ShoppingList = ({items, loadItemList}) => {
   const [itemFormVisible, setItemFormVisible] = useState(false);
 
   const itemsJsx = items.map(item => {
     return (
       <Item
         key={item.item_id}
-        name={item.name} 
-        description={item.description}
-        quantity={item.quantity}
-        purchased={item.purchased} 
-        itemId={item.item_id}
+        data={item}
+        loadItemList={loadItemList}
       />
     )
   });
@@ -35,7 +32,12 @@ const ShoppingList = ({items}) => {
         {itemsJsx}
       </Container>
       
-      {itemFormVisible && <ItemForm onClose={() => setItemFormVisible(false)} />}
+      {itemFormVisible && (
+        <ItemForm onClose={() => {
+          loadItemList();
+          setItemFormVisible(false)
+        }} />
+      )}
 
     </>
   )

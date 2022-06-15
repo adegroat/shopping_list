@@ -19,17 +19,15 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 const ItemForm = ({
   onClose, 
   isEditing = false, 
-  nameProp = '', 
-  descriptionProp = '', 
-  quantityProp = 1, 
-  purchasedProp = false,
-  item_id = 0
+  data = {}
 }) => {
-  const [name, setName] = useState(nameProp);
-  const [description, setDescription] = useState(descriptionProp);
-  const [quantity, setQuantity] = useState(quantityProp);
-  const [purchased, setPurchased] = useState(purchasedProp);
+  const [name, setName] = useState(data.name ? data.name : '');
+  const [description, setDescription] = useState(data.description ? data.description : '');
+  const [quantity, setQuantity] = useState(data.quantity ? data.quantity : 1);
+  const [purchased, setPurchased] = useState(data.purchased ? data.purchased : false);
   const [error, setError] = useState('');
+
+  const item_id = data.item_id ? data.item_id : 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
