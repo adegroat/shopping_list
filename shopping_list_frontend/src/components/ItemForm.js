@@ -12,7 +12,8 @@ import {
   Button,
   Grid,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  IconButton
 } from '@mui/material';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
@@ -73,8 +74,9 @@ const ItemForm = ({
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
             Shopping List
           </Typography>
-
-          <LastPageIcon onClick={onClose} />
+          <IconButton onClick={onClose}>
+            <LastPageIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       

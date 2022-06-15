@@ -7,7 +7,8 @@ import {
   Dialog, 
   DialogTitle, 
   DialogContent, 
-  Button 
+  Button,
+  IconButton
 } from '@mui/material';
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -89,8 +90,12 @@ const Item = ({data, loadItemList}) => {
         </Box>
 
         <Box>
-          <EditOutlinedIcon onClick={() => setItemEdit(item_id)} />
-          <DeleteOutlinedIcon onClick={() => setDeleteVisible(true)} />
+          <IconButton onClick={() => setItemEdit(item_id)}>
+            <EditOutlinedIcon />
+          </IconButton>
+          <IconButton onClick={() => setDeleteVisible(true)}>
+            <DeleteOutlinedIcon />
+          </IconButton>
         </Box>
       </Box>
 
