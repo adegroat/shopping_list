@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Dialog, 
   DialogContent, 
@@ -9,11 +9,19 @@ import {
   Box,
   Select,
   MenuItem,
-  Button
+  Button,
+  Grid
 } from '@mui/material';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
-const ItemForm = ({onClose}) => {
+const ItemForm = ({onClose, isEditing = false}) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddTask = (e) => {
+    alert("Add Task");
+  }
 
   return (
     <Dialog open={true} onClose={onClose} fullWidth={true} maxWidth="sm">
@@ -23,23 +31,35 @@ const ItemForm = ({onClose}) => {
             Shopping List
           </Typography>
 
-          <LastPageIcon />
+          <LastPageIcon onClick={onClose} />
         </Toolbar>
       </AppBar>
       
       <DialogContent sx={{flexGrow: 1}}>
         <Typography color="primary">
-          Add an Item
+          {isEditing ? 'Edit' : 'Add'} an Item
         </Typography>
 
         <Typography>
-          Add your new item below
+          {isEditing ? 'Edit your new item below' : 'Add your new item below'}
         </Typography>
 
-        <Box component="form" onSubmit={() => alert("test")}>
-          <TextField margin="normal" fullWidth placeholder="Item Name" />
-          <TextField margin="normal" fullWidth multiline rows={5} placeholder="Description" />
-          <Select fullWidth> 
+        <Box component="form" onSubmit={(e) => handleAddTask(e) }>
+          <TextField 
+            margin="normal" 
+            fullWidth 
+            placeholder="Item Name"
+            onChange={(e) => setName(e.target.value)} />
+
+          <TextField 
+            margin="normal" 
+            fullWidth 
+            multiline 
+            rows={4} 
+            placeholder="Description"
+            onChange={(e) => setDescription(e.target.value)} />
+          
+          <Select fullWidth value={quantity} onChange={(e) => setQuantity(e.target.value)}> 
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>
             <MenuItem value={3}>3</MenuItem>
@@ -52,10 +72,12 @@ const ItemForm = ({onClose}) => {
             <MenuItem value={10}>10</MenuItem>
           </Select>
 
-          <Box component="div" margin="normal">
-            <Button>Cancel</Button>
-            <Button variant="contained">Add Task</Button>
-          </Box>
+          <Grid container sx={{mt: 4}} justifyContent="flex-end">
+            <Button onClick={onClose}>Cancel</Button>
+            <Button type="submit" variant="contained">
+              {isEditing ? 'Add Item' : 'Save Item'}
+            </Button>
+          </Grid>
         </Box>
       </DialogContent> 
     </Dialog>
