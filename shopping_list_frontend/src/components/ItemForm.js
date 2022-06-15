@@ -118,7 +118,12 @@ const ItemForm = ({
           </Select>
 
           {isEditing && (
-            <FormControlLabel control={<Checkbox checked={purchased} />} label="Purchased" />
+            <FormControlLabel 
+              control={
+                <Checkbox checked={purchased} onChange={() => setPurchased(!purchased)} />
+              }
+              label="Purchased"
+            />
           )}
 
           <Grid container sx={{mt: 4}} justifyContent="flex-end">

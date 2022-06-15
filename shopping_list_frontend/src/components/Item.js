@@ -17,13 +17,26 @@ import ItemForm from './ItemForm';
 
 const Item = ({data, loadItemList}) => {
   const { name, description, quantity, purchased, item_id } = data
-  const [purchasedChecked, setPurchasedChecked] = useState(purchased);  
   const [itemEdit, setItemEdit] = useState(0);
   const [error, setError] = useState('');
   const [deleteVisible, setDeleteVisible] = useState(false);
 
   const updatePurchased = (e) => {
-    setPurchasedChecked(!purchasedChecked);
+    (async () => {
+      const rawRes = await fetch(`http://localhost:8080/api/list_items/${item_id}`, {
+        method: 'PATCH',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({...data, purchased: !purchased})
+      });
+      const res = await rawRes.json();
+
+      if(res.status === 'success') {
+        loadItemList();
+      }
+    })();
   }
 
   const deleteItem = () => {
@@ -55,20 +68,20 @@ const Item = ({data, loadItemList}) => {
       }}>
         <Box sx={{display: 'flex', flexDirection: 'row', flexGrow: 1, alignItems: 'center'}}>
           <Box>
-            <Checkbox checked={purchasedChecked} onChange={(e) => updatePurchased(e)} />
+            <Checkbox checked={purchased} onChange={(e) => updatePurchased(e)} />
           </Box>
           
           <Box sx={{display: 'flex', flexDirection: 'column', ml: '6px'}}>
             <Typography sx={{
-              color: purchasedChecked ? '#1976d2' : 'black', 
+              color: purchased ? '#1976d2' : 'black', 
               fontWeight: 'bold', 
-              textDecoration: purchasedChecked ? 'line-through': 'normal'
+              textDecoration: purchased ? 'line-through': 'normal'
             }}>
               {name}
             </Typography>
 
             <Typography color='gray' sx={{
-              textDecoration: purchasedChecked ? 'line-through': 'normal'
+              textDecoration: purchased ? 'line-through': 'normal'
             }}>
               {description}
             </Typography>
