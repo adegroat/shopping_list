@@ -10,7 +10,13 @@ const ShoppingList = ({items}) => {
 
   const itemsJsx = items.map(item => {
     return (
-      <Item key={item.item_id} name={item.name} description={item.description} />
+      <Item
+        key={item.item_id}
+        name={item.name} 
+        description={item.description}
+        quantity={item.quantity}
+        purchased={item.purchased} 
+      />
     )
   });
 
