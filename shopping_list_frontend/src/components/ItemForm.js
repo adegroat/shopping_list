@@ -18,9 +18,36 @@ const ItemForm = ({onClose, isEditing = false}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [purchased, setPurchased] = useState(false);
+  const [error, setError] = useState('');
 
   const handleAddTask = (e) => {
-    alert("Add Task");
+    e.preventDefault();
+
+    const data = {
+      name,
+      description,
+      quantity,
+      purchased
+    };
+
+    (async () => {
+      const rawRes = await fetch('http://localhost:8080/api/list_items', {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const res = await rawRes.json();
+
+      if(res.status == 'success') {
+        onClose();
+      } else {
+        setError(res.error);
+      }
+    })();
   }
 
   return (
