@@ -3,13 +3,22 @@ const router = express.Router();
 const db = require('../db/db');
 
 router.get('/list_items', async (req, res) => {
-  const list_items = await db.any("SELECT * FROM list_items ORDER BY name;");
-  res.json(list_items);
+  try {
+    const list_items = await db.any("SELECT * FROM list_items ORDER BY name;");
+    res.json(list_items);
+  } catch(e) {
+    res.json({error: 'Failed to get items'});
+  }
+
 });
 
 router.get('/list_items/:id', async (req, res) => {
-  const item = await db.any("SELECT * FROM list_items WHERE item_id = $1;", [req.params.id]);
-  res.json(item);
+  try {
+    const item = await db.any("SELECT * FROM list_items WHERE item_id = $1;", [req.params.id]);
+    res.json(item);
+  } catch(e) {
+    res.json({error: 'Failed to find item'});
+  }
 });
 
 router.post('/list_items', async (req, res) => {
@@ -18,10 +27,12 @@ router.post('/list_items', async (req, res) => {
   } else {
     const {name, description, quantity} = req.body;
 
-    const ins_query = await db.none("INSERT INTO list_items(name, description, quantity) VALUES($1, $2, $3)", [name, description, quantity]);
-    
-    // add proper error handling
-    res.json({status: 'success'});
+    try {
+      const ins_query = await db.none("INSERT INTO list_items(name, description, quantity) VALUES($1, $2, $3)", [name, description, quantity]);
+      res.json({status: 'success'});
+    } catch(e) {
+      res.json({error: 'Failed to add item'});
+    }
   }
 });
 
@@ -31,10 +42,13 @@ router.patch('/list_items/:id', async (req, res) => {
   } else {
     const {name, description, quantity, purchased} = req.body;
 
-    const update = await db.none("UPDATE list_items SET name=$1, description=$2, quantity=$3, purchased=$4 WHERE item_id=$5", [name, description, quantity, purchased, req.params.id]);
+    try {
+      const update = await db.none("UPDATE list_items SET name=$1, description=$2, quantity=$3, purchased=$4 WHERE item_id=$5", [name, description, quantity, purchased, req.params.id]);
+      res.json({status: 'success'});
+    } catch(e) {
+      res.json({error: 'Failed to update item'});
+    }
     
-    // add proper error handling
-    res.json({status: 'success'});
   }
 });
 
@@ -42,8 +56,12 @@ router.delete('/list_items/:id', async (req, res) => {
   if(!req.params.id) {
     res.json({error: 'Could not delete'});
   } else {
-    const del = await db.none("DELETE FROM list_items WHERE item_id=$1", [req.params.id]);
-    res.json({status: 'success'});
+    try {
+      const del = await db.none("DELETE FROM list_items WHERE item_id=$1", [req.params.id]);
+      res.json({status: 'success'});
+    } catch(e) {
+      res.json({error: 'Failed to delete item'});
+    }
   }
 });
 
