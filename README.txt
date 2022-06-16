@@ -6,6 +6,6 @@ Instructions:
 In the main "shopping_list" directory, run "npm install"
 In the "shopping_list_frontend" directory also run "npm install"
 
-Back in the main "shopping_list" directory, run "npm app.js"
+Back in the main "shopping_list" directory, run "node app.js"
 In the "shopping_list_frontend" directory, run "npm start"
 Finally, the frontend should be running on http://localhost:3000
