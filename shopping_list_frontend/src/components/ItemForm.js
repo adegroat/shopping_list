@@ -40,6 +40,11 @@ const ItemForm = ({
       purchased
     };
 
+    if(name.length <= 0 || description.length <= 0) {
+      setError('Please enter name and description');
+      return;
+    }
+
     const shouldPatch = isEditing && item_id !== 0;
 
     let url = 'http://localhost:8080/api/list_items';
@@ -126,6 +131,12 @@ const ItemForm = ({
               }
               label="Purchased"
             />
+          )}
+
+          {error.length > 0 && (
+            <Typography color="red">
+              {error}
+            </Typography>
           )}
 
           <Grid container sx={{mt: 4}} justifyContent="flex-end">
